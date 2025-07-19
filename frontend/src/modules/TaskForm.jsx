@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { TaskPriority, TaskStatus } from "../utils/constants";
 import { addTask, updateTask } from "../redux/slices/task";
 
-const TaskForm = ({ data = {} }) => {
+const TaskForm = ({ data = {}, onTaskSaved }) => {
   const dispatch = useAppDispatch();
 
   const { users } = useAppSelector((state) => state.users);
@@ -47,6 +47,8 @@ const TaskForm = ({ data = {} }) => {
         })
       );
     }
+
+    onTaskSaved && onTaskSaved();
   };
 
   console.log(users);

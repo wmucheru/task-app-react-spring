@@ -1,6 +1,7 @@
 package com.test.app.tasks;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public class TaskService {
     }
 
     public List<Task> getAll() {
-        return repository.findAll();
+        return repository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 
     public Task getById(Long id) {
@@ -38,8 +39,9 @@ public class TaskService {
         return repository.save(task);
     }
 
-    public void delete(Long id) {
+    public Long delete(Long id) {
         repository.deleteById(id);
+        return id;
     }
 
 }

@@ -20,6 +20,7 @@ const Tasks = () => {
   const { tasks, taskStatus } = useAppSelector((state) => state.tasks);
 
   const [activeTask, setActiveTask] = useState({});
+  const [modalOpen, setModalOpen] = useState(false);
 
   /**
    *
@@ -32,7 +33,7 @@ const Tasks = () => {
   }, []);
 
   const getTasksByStatus = (status) => {
-    return tasks?.filter((t) => t.status === status);
+    return tasks?.filter((t) => t?.status === status);
   };
 
   // console.log(tasks[0]);
@@ -44,10 +45,14 @@ const Tasks = () => {
           <Modal
             title="New Task"
             buttonText={"New Task"}
-            isOpen={activeTask?.id !== undefined}
-            onToggleClose={() => setActiveTask({})}
+            isOpen={modalOpen}
+            onToggleOpen={() => setModalOpen(true)}
+            onToggleClose={() => {
+              setActiveTask({});
+              setModalOpen(false);
+            }}
           >
-            <TaskForm data={activeTask} />
+            <TaskForm data={activeTask} onTaskSaved={() => activeTask} />
           </Modal>
         </div>
 
@@ -69,12 +74,13 @@ const Tasks = () => {
               return (
                 <div key={index} className="flex flex-col gap-4 grow">
                   <h4 className="mb-2">{obj?.label}</h4>
-                  {getTasksByStatus(obj.status).map((t, index) => (
+                  {getTasksByStatus(obj?.status).map((t, index) => (
                     <TaskCard
                       key={index}
                       data={t}
                       onTaskSelected={(data) => {
                         setActiveTask(data);
+                        setModalOpen(true);
                       }}
                     />
                   ))}

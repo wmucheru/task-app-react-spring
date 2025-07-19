@@ -71,7 +71,7 @@ export const updateTask = createAsyncThunk(
     try {
       let response = await useAPI({
         type: "PUT",
-        url: "/tasks",
+        url: `/tasks/${obj.id}`,
         data: obj,
       });
 
@@ -102,6 +102,11 @@ const taskSlice = createSlice({
   name: "task",
   initialState,
   reducers: {
+    setTasks: (state, action) => {
+      console.log(action.payload);
+      state.task = action.payload;
+      state.taskStatus = initialState.taskStatus;
+    },
     setActiveTask: (state, action) => {
       state.task = action.payload;
       state.taskStatus = initialState.taskStatus;
@@ -177,10 +182,11 @@ const taskSlice = createSlice({
     });
 
     builder.addCase(addTask.fulfilled, (state, action) => {
-      const { task, message, error } = action.payload;
+      const { message, error } = action.payload;
+      const task = action.payload;
 
       state.task = task;
-      state.tasks = [...state.tasks, task];
+      state.tasks = [task, ...state.tasks];
       state.taskStatus = {
         message,
         error,
@@ -208,11 +214,10 @@ const taskSlice = createSlice({
     });
 
     builder.addCase(updateTask.fulfilled, (state, action) => {
-      const { task, message, error } = action.payload;
+      const { message, error } = action.payload;
+      const task = action.payload;
 
-      state.tasks = [...state.tasks].map((s, i) =>
-        s.id === task.id ? task : s
-      );
+      state.tasks = [...state.tasks].map((s) => (s.id === task.id ? task : s));
       state.taskStatus = {
         message,
         error,
@@ -242,10 +247,11 @@ const taskSlice = createSlice({
     });
 
     builder.addCase(deleteTask.fulfilled, (state, action) => {
-      const { id, message, error } = action.payload;
+      const { message, error } = action.payload;
+      const task = action.payload;
 
-      if (id) {
-        state.tasks = [...state.tasks].filter((s) => s.id !== id);
+      if (task?.id) {
+        state.tasks = [...state.tasks].filter((s) => s.id !== task?.id);
       }
 
       state.taskStatus.deleted = true;
@@ -256,6 +262,6 @@ const taskSlice = createSlice({
   },
 });
 
-export const { setActiveTask } = taskSlice.actions;
+export const { setTasks, setActiveTask } = taskSlice.actions;
 
 export default taskSlice.reducer;

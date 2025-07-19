@@ -1,11 +1,12 @@
 import { TaskPriority } from "../utils/constants";
 
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { deleteTask } from "../redux/slices/task";
+import { deleteTask, setTasks } from "../redux/slices/task";
 
 const TaskCard = ({ data = {}, onTaskSelected }) => {
   const dispatch = useAppDispatch();
 
+  const { tasks } = useAppSelector((state) => state.tasks);
   const { users } = useAppSelector((state) => state.users);
 
   const { id, title, description, status, priority, assigneeId, creatorId } =
@@ -49,7 +50,7 @@ const TaskCard = ({ data = {}, onTaskSelected }) => {
     >
       <h4 className="m-0 mb-4">{title}</h4>
       <p className="mb-2">
-        {description || <span className="text-gray-300">No description</span>}
+        <span className="text-gray-400">{description || "No description"}</span>
       </p>
       <p>
         <small className="uppercase">{renderPriority(priority)}</small>
