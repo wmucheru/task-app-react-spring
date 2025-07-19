@@ -35,7 +35,7 @@ const Tasks = () => {
     return tasks?.filter((t) => t.status === status);
   };
 
-  console.log(tasks);
+  console.log(tasks[0]);
 
   return (
     <PageAdmin title="Tasks">
@@ -68,9 +68,9 @@ const Tasks = () => {
               return (
                 <div key={index} className="flex flex-col gap-4 grow">
                   <h4 className="mb-2">{obj?.label}</h4>
-                  {getTasksByStatus(obj.status).map((t) => (
+                  {getTasksByStatus(obj.status).map((t, index) => (
                     <TaskCard
-                      key={t?.id}
+                      key={index}
                       data={t}
                       onTaskSelected={(data) => {
                         setActiveTask(data);

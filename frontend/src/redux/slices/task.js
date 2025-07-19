@@ -129,9 +129,7 @@ const taskSlice = createSlice({
     });
 
     builder.addCase(fetchTasks.fulfilled, (state, action) => {
-      const { _embedded = {} } = action.payload;
-
-      state.tasks = _embedded?.tasks || [];
+      state.tasks = action.payload || [];
       state.taskStatus.loading = false;
     });
 

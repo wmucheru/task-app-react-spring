@@ -51,10 +51,13 @@ const Modal = ({
           ></div>
 
           <div className={`block max-w-2xl w-full m-auto px-4 ${modalClass}`}>
-            <div className={`flex flex-col relative overflow-hidden z-20 `}>
+            <div
+              className={`flex flex-col relative overflow-hidden z-20
+                shadow-lg py-8`}
+            >
               <div
                 className="flex justify-between px-4 py-3 items-center 
-                relative bg-blue-200"
+                relative bg-blue-200 "
               >
                 <h4 className="flex m-0 font-bold">{title}</h4>
                 <span

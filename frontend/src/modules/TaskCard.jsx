@@ -1,4 +1,4 @@
-import { TaskPriority, TaskStatus } from "../utils/constants";
+import { TaskPriority } from "../utils/constants";
 
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { deleteTask } from "../redux/slices/task";
@@ -39,11 +39,8 @@ const TaskCard = ({ data = {}, onTaskSelected }) => {
   const onTaskDeleted = (id) => {
     if (window.confirm("Delete this task?")) {
       dispatch(deleteTask(id));
-      alert("Task deleted!");
     }
   };
-
-  console.log(data);
 
   return (
     <div

@@ -129,9 +129,7 @@ const userSlice = createSlice({
     });
 
     builder.addCase(fetchUsers.fulfilled, (state, action) => {
-      const { _embedded = {} } = action.payload;
-
-      state.users = _embedded?.users || [];
+      state.users = action.payload || [];
       state.userStatus.loading = false;
     });
 

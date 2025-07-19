@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { TaskPriority, TaskStatus } from "../utils/constants";
+import { addTask } from "../redux/slices/task";
 
 const TaskForm = ({ data = {} }) => {
   const dispatch = useAppDispatch();
 
   const { users } = useAppSelector((state) => state.users);
 
-  const [form, setForm] = useState({});
+  const [form, setForm] = useState({
+    status: TaskStatus.TODO,
+    priority: TaskPriority.MEDIUM,
+  });
 
   useEffect(() => {
     if (data?.id) {
@@ -28,6 +33,7 @@ const TaskForm = ({ data = {} }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    dispatch(addTask(form));
   };
 
   console.log(form);
@@ -42,6 +48,7 @@ const TaskForm = ({ data = {} }) => {
           className="form-control"
           onChange={onChange}
           value={form?.title}
+          required
         />
       </div>
 
@@ -53,6 +60,7 @@ const TaskForm = ({ data = {} }) => {
           rows={5}
           onChange={onChange}
           value={form?.description}
+          required
         ></textarea>
       </div>
 
@@ -64,11 +72,16 @@ const TaskForm = ({ data = {} }) => {
           className="form-control max-w-32"
           onChange={onChange}
           value={form?.status}
+          required
         >
-          {["TODO", "IN_PROGRESS", "DONE"].map((s, index) => {
+          {[
+            { label: "TODO", value: TaskStatus.TODO },
+            { label: "IN PROGRESS", value: TaskStatus.IN_PROGRESS },
+            { label: "COMPLETED", value: TaskStatus.COMPLETED },
+          ].map((s, index) => {
             return (
-              <option key={index} value={s}>
-                {s}
+              <option key={index} value={s?.value}>
+                {s?.label}
               </option>
             );
           })}
@@ -76,18 +89,23 @@ const TaskForm = ({ data = {} }) => {
       </div>
 
       <div className="mb-2">
-        <label>Status</label>
+        <label>Priority</label>
         <br />
         <select
           name="priority"
           className="form-control max-w-32"
           onChange={onChange}
           value={form?.priority}
+          required
         >
-          {[...Array.from(Array(10))].map((s, index) => {
+          {[
+            { label: "HIGH", value: TaskPriority.HIGH },
+            { label: "MEDIUM", value: TaskPriority.MEDIUM },
+            { label: "COMPLETED", value: TaskPriority.COMPLETED },
+          ].map((p, index) => {
             return (
-              <option key={index} value={index + 1}>
-                {index + 1}
+              <option key={index} value={p?.value}>
+                {p?.label}
               </option>
             );
           })}
@@ -101,14 +119,15 @@ const TaskForm = ({ data = {} }) => {
           name="assigneeId"
           className="form-control"
           onChange={onChange}
-          value={form?.priority}
+          value={form?.assigneeId}
+          required
         >
           <option value="">Select user to assign</option>
 
           {users?.map((user, index) => {
             return (
               <option key={index} value={user?.id}>
-                {user?.email}
+                {user?.username}
               </option>
             );
           })}
@@ -116,7 +135,7 @@ const TaskForm = ({ data = {} }) => {
       </div>
 
       <div className="mb-2">
-        <button className="w-full">Login</button>
+        <button className="w-full">Create Task</button>
       </div>
     </form>
   );
