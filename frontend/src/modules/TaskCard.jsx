@@ -12,7 +12,7 @@ const TaskCard = ({ data = {}, onTaskSelected }) => {
     data;
 
   const getAssigneeName = (userId) => {
-    return users?.filter((u) => u.id === userId);
+    return users?.filter((u) => u.id === userId)?.[0]?.username || "User";
   };
 
   const renderPriority = (priority) => {

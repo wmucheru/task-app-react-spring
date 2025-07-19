@@ -35,7 +35,7 @@ const Tasks = () => {
     return tasks?.filter((t) => t.status === status);
   };
 
-  console.log(tasks[0]);
+  // console.log(tasks[0]);
 
   return (
     <PageAdmin title="Tasks">
@@ -45,6 +45,7 @@ const Tasks = () => {
             title="New Task"
             buttonText={"New Task"}
             isOpen={activeTask?.id !== undefined}
+            onToggleClose={() => setActiveTask({})}
           >
             <TaskForm data={activeTask} />
           </Modal>

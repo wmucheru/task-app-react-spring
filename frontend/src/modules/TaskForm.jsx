@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { TaskPriority, TaskStatus } from "../utils/constants";
-import { addTask } from "../redux/slices/task";
+import { addTask, updateTask } from "../redux/slices/task";
 
 const TaskForm = ({ data = {} }) => {
   const dispatch = useAppDispatch();
@@ -33,7 +33,20 @@ const TaskForm = ({ data = {} }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(addTask(form));
+
+    delete form?.createdAt;
+    delete form?.updatedAt;
+
+    if (form?.id) {
+      dispatch(updateTask(form));
+    } else {
+      dispatch(
+        addTask({
+          ...form,
+          creatorId: 1,
+        })
+      );
+    }
   };
 
   console.log(users);
@@ -135,7 +148,9 @@ const TaskForm = ({ data = {} }) => {
       </div>
 
       <div className="mb-2">
-        <button className="w-full">Create Task</button>
+        <button className="w-full">
+          {form?.id ? "Update" : "Create"} Task
+        </button>
       </div>
     </form>
   );
