@@ -22,7 +22,7 @@ Backend
 
 ### Frontend
 
-Testing powered by Jest
+Testing powered by default CRA testing library
 
 ### Backend
 
