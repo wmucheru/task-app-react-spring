@@ -36,7 +36,7 @@ const TaskForm = ({ data = {} }) => {
     dispatch(addTask(form));
   };
 
-  console.log(form);
+  console.log(users);
 
   return (
     <form className="p-4 max-w-sm" onSubmit={onSubmit}>
